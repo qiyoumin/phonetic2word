@@ -1,0 +1,155 @@
+.app {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+/* Search button + prompt */
+.searchRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.searchButton {
+  padding: 0.625rem 1.5rem;
+  border: none;
+  border-radius: 0.5rem;
+  background: #6366f1;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  min-height: 44px;
+}
+
+.searchButton:hover:not(:disabled) {
+  background: #4f46e5;
+}
+
+.searchButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.searchButton:focus-visible {
+  outline: 2px solid #6366f1;
+  outline-offset: 2px;
+}
+
+.emptyPrompt {
+  color: #b45309;
+  font-size: 0.875rem;
+}
+
+/* ----------------------------------------------------------------
+   Mobile < 640px: single column
+   ---------------------------------------------------------------- */
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.selectorColumn {
+  width: 100%;
+}
+
+.resultColumn {
+  width: 100%;
+}
+
+.historyColumn {
+  width: 100%;
+}
+
+/* ----------------------------------------------------------------
+   Tablet 640-1024px: two columns
+   ---------------------------------------------------------------- */
+@media (min-width: 640px) {
+  .header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 1.5rem;
+  }
+
+  .selectorColumn {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .resultColumn {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+
+  .historyColumn {
+    grid-column: 1;
+    grid-row: 2;
+  }
+}
+
+/* ----------------------------------------------------------------
+   Desktop > 1024px: three columns
+   ---------------------------------------------------------------- */
+@media (min-width: 1025px) {
+  .main {
+    display: grid;
+    grid-template-columns: minmax(280px, 1fr) minmax(320px, 1.5fr) minmax(240px, 1fr);
+    grid-template-rows: auto;
+    gap: 1.5rem;
+  }
+
+  .selectorColumn {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .resultColumn {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .historyColumn {
+    grid-column: 3;
+    grid-row: 1;
+  }
+}
+
+/* ----------------------------------------------------------------
+   Mobile-specific: symbol grid 4 columns, sequence horizontal scroll
+   ---------------------------------------------------------------- */
+@media (max-width: 639px) {
+  .app {
+    padding: 0.75rem;
+    padding-bottom: 60px; /* space for history drawer */
+  }
+
+  .title {
+    font-size: 1.125rem;
+  }
+}

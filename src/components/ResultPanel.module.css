@@ -1,0 +1,296 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* States */
+.idle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  gap: 0.75rem;
+  color: #6b7280;
+}
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid #e5e7eb;
+  border-top-color: #6366f1;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  gap: 0.75rem;
+  color: #dc2626;
+  font-size: 0.875rem;
+}
+
+.retryButton {
+  padding: 0.5rem 1rem;
+  border: 1px solid #dc2626;
+  border-radius: 0.375rem;
+  background: #fff;
+  color: #dc2626;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+
+.retryButton:hover {
+  background: #fef2f2;
+}
+
+.retryButton:focus-visible {
+  outline: 2px solid #dc2626;
+  outline-offset: 2px;
+}
+
+/* Word List */
+.wordList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.wordItem {
+  padding: 0.75rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.1s ease;
+}
+
+.wordItem:hover {
+  border-color: #6366f1;
+  background: #fafafe;
+}
+
+.wordItem:focus-visible {
+  outline: 2px solid #6366f1;
+  outline-offset: 2px;
+}
+
+.wordSpelling {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.wordPhonetic {
+  font-size: 0.8125rem;
+  color: #6b7280;
+  margin-left: 0.5rem;
+}
+
+.wordMeta {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.wordPos {
+  color: #6366f1;
+  font-style: italic;
+}
+
+/* Empty / Fuzzy */
+.emptyMessage {
+  text-align: center;
+  color: #6b7280;
+  font-size: 0.875rem;
+  padding: 1rem 0;
+}
+
+.fuzzySection {
+  margin-top: 0.5rem;
+}
+
+.fuzzyTitle {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+  margin: 0 0 0.5rem;
+}
+
+.fuzzyList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.fuzzyItem {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.1s ease;
+}
+
+.fuzzyItem:hover {
+  border-color: #6366f1;
+  background: #fafafe;
+}
+
+.fuzzyWord {
+  font-weight: 500;
+  color: #111827;
+}
+
+.fuzzyPhonetic {
+  font-size: 0.8125rem;
+  color: #6b7280;
+  margin-left: 0.5rem;
+}
+
+.diffChar {
+  color: #dc2626;
+  font-weight: 600;
+}
+
+.similarity {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+/* Word Detail */
+.backButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.375rem 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  background: #fff;
+  color: #374151;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: all 0.15s ease;
+}
+
+.backButton:hover {
+  border-color: #6366f1;
+  color: #6366f1;
+}
+
+.backButton:focus-visible {
+  outline: 2px solid #6366f1;
+  outline-offset: 2px;
+}
+
+.detail {
+  padding: 1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  background: #fafafe;
+}
+
+.detailHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.detailWord {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+}
+
+.detailPhonetic {
+  font-size: 1rem;
+  color: #6b7280;
+}
+
+.audioButton {
+  padding: 0.375rem 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  background: #fff;
+  cursor: pointer;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.audioButton:hover {
+  border-color: #6366f1;
+  color: #6366f1;
+}
+
+.audioButton:focus-visible {
+  outline: 2px solid #6366f1;
+  outline-offset: 2px;
+}
+
+.meaningSection {
+  margin-bottom: 0.75rem;
+}
+
+.meaningPos {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #6366f1;
+  font-style: italic;
+  margin: 0 0 0.375rem;
+}
+
+.definitionList {
+  list-style: decimal;
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.definitionItem {
+  margin-bottom: 0.375rem;
+  font-size: 0.875rem;
+  color: #374151;
+  line-height: 1.5;
+}
+
+.definitionCn {
+  color: #6b7280;
+  font-size: 0.8125rem;
+}
+
+.example {
+  font-style: italic;
+  color: #6b7280;
+  font-size: 0.8125rem;
+  margin-top: 0.125rem;
+}
