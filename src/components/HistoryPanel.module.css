@@ -196,11 +196,9 @@
 /* Tablet 640-1024px: constrained list height + thin scrollbar */
 @media (min-width: 640px) and (max-width: 1024px) {
   .list {
-    height: 300px;
     overflow-y: auto;
     resize: vertical;
     min-height: 100px;
-    max-height: 80vh;
     scrollbar-width: thin;
     scrollbar-color: #c7c7cc transparent;
   }
@@ -226,11 +224,9 @@
 /* Desktop >1024px: constrained list height + thin scrollbar */
 @media (min-width: 1025px) {
   .list {
-    height: 400px;
     overflow-y: auto;
     resize: vertical;
     min-height: 100px;
-    max-height: 80vh;
     scrollbar-width: thin;
     scrollbar-color: #c7c7cc transparent;
   }

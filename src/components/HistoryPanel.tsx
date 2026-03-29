@@ -26,20 +26,32 @@ export function HistoryPanel({
   const [collapsed, setCollapsed] = useState(true);
   const listRef = useRef<HTMLUListElement>(null);
 
-  // 从 localStorage 恢复列表高度
+  // 默认最大高度阈值（px），未保存过高度时使用
+  const DEFAULT_MAX_HEIGHT = typeof window !== 'undefined' && window.innerWidth <= 1024 ? 300 : 400;
+
+  // 从 localStorage 恢复列表高度，或在内容溢出时设置默认高度
   useEffect(() => {
+    const el = listRef.current;
+    if (!el) return;
+
     try {
       const saved = localStorage.getItem(LIST_HEIGHT_KEY);
-      if (saved && listRef.current) {
+      if (saved) {
         const height = parseInt(saved, 10);
         if (height > 0) {
-          listRef.current.style.height = `${height}px`;
+          el.style.height = `${height}px`;
+          return;
         }
       }
     } catch {
       // localStorage 不可用时静默忽略
     }
-  }, []);
+
+    // 无保存值时：内容超过阈值才设固定高度，否则自然高度
+    if (el.scrollHeight > DEFAULT_MAX_HEIGHT) {
+      el.style.height = `${DEFAULT_MAX_HEIGHT}px`;
+    }
+  }, [records.length, DEFAULT_MAX_HEIGHT]);
 
   // 监听列表高度变化（用户拖拽 resize），持久化到 localStorage
   useEffect(() => {
