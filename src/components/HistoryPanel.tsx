@@ -1,7 +1,9 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import type { HistoryRecord } from '../types/index';
 import { ConfirmDialog } from './ConfirmDialog';
 import styles from './HistoryPanel.module.css';
+
+const LIST_HEIGHT_KEY = 'history-list-height';
 
 export interface HistoryPanelProps {
   records: HistoryRecord[];
@@ -22,6 +24,42 @@ export function HistoryPanel({
 }: HistoryPanelProps) {
   const [showConfirm, setShowConfirm] = useState(false);
   const [collapsed, setCollapsed] = useState(true);
+  const listRef = useRef<HTMLUListElement>(null);
+
+  // 从 localStorage 恢复列表高度
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(LIST_HEIGHT_KEY);
+      if (saved && listRef.current) {
+        const height = parseInt(saved, 10);
+        if (height > 0) {
+          listRef.current.style.height = `${height}px`;
+        }
+      }
+    } catch {
+      // localStorage 不可用时静默忽略
+    }
+  }, []);
+
+  // 监听列表高度变化（用户拖拽 resize），持久化到 localStorage
+  useEffect(() => {
+    const el = listRef.current;
+    if (!el) return;
+
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const height = Math.round(entry.contentRect.height);
+        try {
+          localStorage.setItem(LIST_HEIGHT_KEY, String(height));
+        } catch {
+          // 静默忽略
+        }
+      }
+    });
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   const handleClearClick = useCallback(() => {
     setShowConfirm(true);
@@ -63,7 +101,7 @@ export function HistoryPanel({
         {records.length === 0 ? (
           <div className={styles.empty}>暂无查询记录</div>
         ) : (
-          <ul className={styles.list} role="list" aria-label="查询历史记录">
+          <ul className={styles.list} role="list" aria-label="查询历史记录" ref={listRef}>
             {records.map((record) => (
               <li
                 key={record.id}

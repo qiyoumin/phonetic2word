@@ -32,6 +32,7 @@ scripts/        — Build-time scripts (index generation)
 ## Code Conventions
 
 - Language: UI text and code comments are in Chinese (中文); identifiers and API names are in English
+- Commit messages must be written in English
 - Use functional React components with hooks; no class components
 - Define shared types in `src/types/index.ts`
 - Export named functions from services; avoid default exports except for the root `App` component
@@ -43,6 +44,7 @@ scripts/        — Build-time scripts (index generation)
 - Framework: Vitest with jsdom environment; property-based tests use `fast-check`
 - Test files are co-located with source: `*.test.ts` / `*.test.tsx` for unit tests, `*.property.test.ts` for property-based tests
 - Every new feature or bug fix must include corresponding tests
+- Any code modification (refactor, new feature, bug fix) must update or add related test cases before considering the task complete
 - Run type check and tests before committing: `npx tsc -b && npx vitest run`
 - Property tests should document which requirement they validate using a comment block with the property number and requirement reference
 - Use `@testing-library/react` and `@testing-library/jest-dom` for component tests

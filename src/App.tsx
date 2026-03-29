@@ -4,7 +4,7 @@ import { SystemSwitcher } from './components/SystemSwitcher';
 import { SymbolSelector } from './components/SymbolSelector';
 import { ResultPanel } from './components/ResultPanel';
 import { HistoryPanel } from './components/HistoryPanel';
-import { searchExact, searchFuzzy, getWordDetail } from './services/dictionaryService';
+import { searchExact, searchFuzzy, getWordDetail, prefetchWordDetails } from './services/dictionaryService';
 import { getHistoryService } from './services/historyService';
 import ipaData from './data/ipa.json';
 import kkData from './data/kk.json';
@@ -80,6 +80,8 @@ function AppContent() {
           type: 'SEARCH_SUCCESS',
           payload: { results: exactResults, fuzzyResults: [] },
         });
+        // 预取前几个单词的详情
+        prefetchWordDetails(exactResults.map((r) => r.word));
         // Save to history
         const record: HistoryRecord = {
           id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
@@ -98,6 +100,8 @@ function AppContent() {
             type: 'SEARCH_SUCCESS',
             payload: { results: [], fuzzyResults },
           });
+          // 预取前几个单词的详情
+          prefetchWordDetails(fuzzyResults.map((r) => r.word));
           // Save fuzzy results to history
           const record: HistoryRecord = {
             id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
@@ -138,17 +142,25 @@ function AppContent() {
 
   const handleSelectWord = useCallback(
     async (word: string) => {
+      dispatch({ type: 'SELECT_WORD_START' });
       try {
         const detail = await getWordDetail(word);
         dispatch({ type: 'SELECT_WORD', payload: detail });
-      } catch {
-        // API miss (e.g. 404) → show a minimal detail view so the click isn't silent
+      } catch (err) {
         const match = state.results.find((r) => r.word === word)
           ?? state.fuzzyResults.find((r) => r.word === word);
+        const isTimeout = err instanceof Error && err.message === 'TIMEOUT';
         const fallback: WordDetail = {
           word,
           phonetic: match?.phonetic ?? '',
-          meanings: [{ partOfSpeech: '', definitions: [{ definition: '暂无释义（该词未被在线词典收录）' }] }],
+          meanings: [{
+            partOfSpeech: '',
+            definitions: [{
+              definition: isTimeout
+                ? '请求超时，请检查网络后重试'
+                : '暂无释义（该词未被在线词典收录）',
+            }],
+          }],
         };
         dispatch({ type: 'SELECT_WORD', payload: fallback });
       }
@@ -219,6 +231,7 @@ function AppContent() {
             results={state.results}
             fuzzyResults={state.fuzzyResults}
             selectedWord={state.selectedWord}
+            detailLoading={state.detailLoading}
             onSelectWord={handleSelectWord}
             onRetry={runSearch}
             onBack={handleBack}

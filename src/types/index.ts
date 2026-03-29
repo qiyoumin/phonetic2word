@@ -72,6 +72,7 @@ export interface AppState {
   results: WordResult[];
   fuzzyResults: FuzzyWordResult[];
   selectedWord: WordDetail | null;
+  detailLoading: boolean;
   error: string | null;
 }
 
@@ -84,7 +85,9 @@ export type AppAction =
   | { type: 'SEARCH_SUCCESS'; payload: { results: WordResult[]; fuzzyResults: FuzzyWordResult[] } }
   | { type: 'SEARCH_EMPTY' }
   | { type: 'SEARCH_ERROR'; payload: string }
+  | { type: 'SELECT_WORD_START' }
   | { type: 'SELECT_WORD'; payload: WordDetail }
+  | { type: 'SELECT_WORD_ERROR' }
   | { type: 'FILL_SEQUENCE'; payload: { system: PhoneticSystem; sequence: PhoneticSymbol[] } }
   | { type: 'DESELECT_WORD' };
 

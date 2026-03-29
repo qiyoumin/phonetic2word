@@ -39,6 +39,7 @@ function renderResultPanel(overrides: Partial<Parameters<typeof ResultPanel>[0]>
     results: [{ word: 'test', phonetic: 'tɛst', arpabet: 'T EH S T', partOfSpeech: ['noun'], briefDefinition: 'a test' }],
     fuzzyResults: [] as FuzzyWordResult[],
     selectedWord: null as WordDetail | null,
+    detailLoading: false,
     onSelectWord: noop,
     onRetry: noop,
     onBack: noop,
@@ -308,5 +309,56 @@ describe('WordDetailView fallback for unknown words', () => {
 
     expect(screen.getByText('mit')).toBeInTheDocument();
     expect(screen.getByText('暂无释义（该词未被在线词典收录）')).toBeInTheDocument();
+  });
+
+  it('renders timeout fallback message', () => {
+    const timeoutDetail: WordDetail = {
+      word: 'test',
+      phonetic: 'tɛst',
+      meanings: [{ partOfSpeech: '', definitions: [{ definition: '请求超时，请检查网络后重试' }] }],
+    };
+    renderResultPanel({ selectedWord: timeoutDetail });
+
+    expect(screen.getByText('test')).toBeInTheDocument();
+    expect(screen.getByText('请求超时，请检查网络后重试')).toBeInTheDocument();
+  });
+});
+
+// --- detailLoading 状态测试 ---
+
+describe('ResultPanel detailLoading', () => {
+  it('显示加载中提示当 detailLoading 为 true', () => {
+    renderResultPanel({ detailLoading: true, selectedWord: null });
+
+    expect(screen.getByText('正在加载单词详情...')).toBeInTheDocument();
+    expect(screen.getByRole('status')).toBeInTheDocument();
+  });
+
+  it('detailLoading 时不显示单词列表', () => {
+    renderResultPanel({ detailLoading: true, selectedWord: null });
+
+    expect(screen.queryByRole('list', { name: '匹配单词列表' })).not.toBeInTheDocument();
+  });
+
+  it('detailLoading 时不显示模糊匹配结果', () => {
+    const fuzzyResults: FuzzyWordResult[] = [{
+      word: 'tusk',
+      phonetic: 'tʌsk',
+      arpabet: 'T AH S K',
+      partOfSpeech: [],
+      briefDefinition: '',
+      similarity: 0.9,
+      diffIndices: [1],
+    }];
+    renderResultPanel({ detailLoading: true, selectedWord: null, fuzzyResults });
+
+    expect(screen.queryByRole('list', { name: '模糊匹配建议' })).not.toBeInTheDocument();
+  });
+
+  it('detailLoading 为 false 时正常显示单词列表', () => {
+    renderResultPanel({ detailLoading: false, selectedWord: null });
+
+    expect(screen.queryByText('正在加载单词详情...')).not.toBeInTheDocument();
+    expect(screen.getByRole('list', { name: '匹配单词列表' })).toBeInTheDocument();
   });
 });

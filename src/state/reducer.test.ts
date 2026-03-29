@@ -29,6 +29,7 @@ describe('appReducer', () => {
     results: [],
     fuzzyResults: [],
     selectedWord: null,
+    detailLoading: false,
     error: null,
   };
 
@@ -166,6 +167,45 @@ describe('appReducer', () => {
       };
       const result = appReducer(baseState, { type: 'SELECT_WORD', payload: detail });
       expect(result.selectedWord).toEqual(detail);
+    });
+
+    it('clears detailLoading when word is selected', () => {
+      const state: AppState = { ...baseState, detailLoading: true };
+      const detail: WordDetail = {
+        word: 'bat',
+        phonetic: 'bæt',
+        meanings: [{ partOfSpeech: 'noun', definitions: [{ definition: 'a bat' }] }],
+      };
+      const result = appReducer(state, { type: 'SELECT_WORD', payload: detail });
+      expect(result.detailLoading).toBe(false);
+      expect(result.selectedWord).toEqual(detail);
+    });
+  });
+
+  describe('SELECT_WORD_START', () => {
+    it('sets detailLoading to true', () => {
+      const result = appReducer(baseState, { type: 'SELECT_WORD_START' });
+      expect(result.detailLoading).toBe(true);
+    });
+
+    it('preserves other state fields', () => {
+      const state: AppState = {
+        ...baseState,
+        searchStatus: 'success',
+        results: [{ word: 'bat', phonetic: 'bæt', arpabet: 'B AE T', partOfSpeech: ['noun'], briefDefinition: 'a bat' }],
+      };
+      const result = appReducer(state, { type: 'SELECT_WORD_START' });
+      expect(result.detailLoading).toBe(true);
+      expect(result.searchStatus).toBe('success');
+      expect(result.results).toEqual(state.results);
+    });
+  });
+
+  describe('SELECT_WORD_ERROR', () => {
+    it('clears detailLoading on error', () => {
+      const state: AppState = { ...baseState, detailLoading: true };
+      const result = appReducer(state, { type: 'SELECT_WORD_ERROR' });
+      expect(result.detailLoading).toBe(false);
     });
   });
 

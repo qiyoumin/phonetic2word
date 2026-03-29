@@ -32,6 +32,7 @@ export const initialState: AppState = {
   results: [],
   fuzzyResults: [],
   selectedWord: null,
+  detailLoading: false,
   error: null,
 };
 
@@ -109,10 +110,23 @@ export function appReducer(state: AppState, action: AppAction): AppState {
         error: action.payload,
       };
 
+    case 'SELECT_WORD_START':
+      return {
+        ...state,
+        detailLoading: true,
+      };
+
     case 'SELECT_WORD':
       return {
         ...state,
         selectedWord: action.payload,
+        detailLoading: false,
+      };
+
+    case 'SELECT_WORD_ERROR':
+      return {
+        ...state,
+        detailLoading: false,
       };
 
     case 'DESELECT_WORD':

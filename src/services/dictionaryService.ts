@@ -148,19 +148,35 @@ function isValidDictionaryEntry(entry: unknown): entry is {
   return true;
 }
 
+const DETAIL_FETCH_TIMEOUT_MS = 8_000;
+
 async function fetchWordDetail(
   word: string,
   signal?: AbortSignal,
 ): Promise<WordDetail> {
-  const response = await fetch(`${DICTIONARY_API_BASE}/${encodeURIComponent(word)}`, {
-    signal,
-  });
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), DETAIL_FETCH_TIMEOUT_MS);
 
-  if (!response.ok) {
-    throw new Error(`Dictionary API error: ${response.status}`);
+  // 如果外部传入了 signal，联动取消
+  if (signal) {
+    if (signal.aborted) {
+      clearTimeout(timeoutId);
+      controller.abort();
+    } else {
+      signal.addEventListener('abort', () => controller.abort(), { once: true });
+    }
   }
 
-  const data: unknown = await response.json();
+  try {
+    const response = await fetch(`${DICTIONARY_API_BASE}/${encodeURIComponent(word)}`, {
+      signal: controller.signal,
+    });
+
+    if (!response.ok) {
+      throw new Error(`Dictionary API error: ${response.status}`);
+    }
+
+    const data: unknown = await response.json();
   // The API returns an array; take the first entry.
   const entry: unknown = Array.isArray(data) ? data[0] : data;
 
@@ -190,6 +206,15 @@ async function fetchWordDetail(
   }));
 
   return { word: entry.word ?? word, phonetic, meanings, audioUrl };
+  } catch (err) {
+    // 区分超时和其他错误，超时时抛出带标识的错误
+    if (err instanceof DOMException && err.name === 'AbortError' && !signal?.aborted) {
+      throw new Error('TIMEOUT');
+    }
+    throw err;
+  } finally {
+    clearTimeout(timeoutId);
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -294,5 +319,52 @@ export function abortSearch(): void {
   if (_currentController) {
     _currentController.abort();
     _currentController = null;
+  }
+}
+
+/**
+ * 预加载音频资源到浏览器 HTTP 缓存。
+ * 静默失败，不影响主流程。
+ */
+function preloadAudio(url: string): void {
+  try {
+    const audio = new Audio();
+    audio.preload = 'auto';
+    audio.src = url;
+    // 浏览器开始加载后即可丢弃引用，资源会留在 HTTP 缓存中
+  } catch {
+    // 静默忽略
+  }
+}
+
+/**
+ * 预取多个单词的详情，静默写入缓存。
+ * 已缓存的单词会跳过，不会重复请求。
+ * 同时预加载音频资源到浏览器缓存。
+ */
+export function prefetchWordDetails(words: string[], maxCount = 5): void {
+  const cache = getCacheService();
+  const targets = words.slice(0, maxCount);
+
+  for (const raw of targets) {
+    const word = stripPronunciationSuffix(raw);
+    // 先检查缓存，命中则跳过（但仍预加载音频）
+    cache.getWordDetail(word).then((cached) => {
+      if (cached) {
+        if (cached.audioUrl) preloadAudio(cached.audioUrl);
+        return;
+      }
+      // 缓存未命中，静默请求并写入缓存
+      fetchWordDetail(word)
+        .then((detail) => {
+          if (detail.audioUrl) preloadAudio(detail.audioUrl);
+          return cache.cacheWordDetail(word, detail);
+        })
+        .catch(() => {
+          // 预取失败静默忽略
+        });
+    }).catch(() => {
+      // 缓存查询失败静默忽略
+    });
   }
 }

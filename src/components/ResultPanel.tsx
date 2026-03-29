@@ -8,6 +8,7 @@ export interface ResultPanelProps {
   results: WordResult[];
   fuzzyResults: FuzzyWordResult[];
   selectedWord: WordDetail | null;
+  detailLoading: boolean;
   onSelectWord: (word: string) => void;
   onRetry: () => void;
   onBack: () => void;
@@ -241,6 +242,7 @@ export function ResultPanel({
   results,
   fuzzyResults,
   selectedWord,
+  detailLoading,
   onSelectWord,
   onRetry,
   onBack,
@@ -305,7 +307,12 @@ export function ResultPanel({
   // status === 'success'
   return (
     <div className={styles.container}>
-      {selectedWord ? (
+      {detailLoading ? (
+        <div className={styles.loading} role="status" aria-live="polite">
+          <div className={styles.spinner} aria-hidden="true" />
+          <span>正在加载单词详情...</span>
+        </div>
+      ) : selectedWord ? (
         <>
           <button
             className={styles.backButton}
@@ -319,7 +326,7 @@ export function ResultPanel({
       ) : (
         <WordList results={results} onSelect={onSelectWord} currentSystem={currentSystem} />
       )}
-      {!selectedWord && fuzzyResults.length > 0 && (
+      {!detailLoading && !selectedWord && fuzzyResults.length > 0 && (
         <FuzzyResults results={fuzzyResults} onSelect={onSelectWord} currentSystem={currentSystem} />
       )}
     </div>

@@ -208,6 +208,7 @@ describe('Property: DESELECT_WORD 保留搜索结果', () => {
             results,
             fuzzyResults,
             selectedWord,
+            detailLoading: false,
             error: null,
           };
 
@@ -250,6 +251,7 @@ describe('Property: 选中-取消选中-再选中往返一致性', () => {
             results,
             fuzzyResults,
             selectedWord: null,
+            detailLoading: false,
             error: null,
           };
 
@@ -290,6 +292,7 @@ describe('Property: SEARCH_START 清除选中状态', () => {
             results: [],
             fuzzyResults: [],
             selectedWord,
+            detailLoading: false,
             error: null,
           };
 
@@ -324,6 +327,7 @@ describe('Property 6: 体系切换状态重置', () => {
       results: fc.array(wordResultArb, { minLength: 1, maxLength: 5 }),
       fuzzyResults: fc.array(fuzzyWordResultArb, { minLength: 1, maxLength: 5 }),
       selectedWord: fc.oneof(fc.constant(null), wordDetailArb),
+      detailLoading: fc.boolean(),
       error: fc.oneof(fc.constant(null), fc.string({ minLength: 1, maxLength: 20 })),
     });
 
