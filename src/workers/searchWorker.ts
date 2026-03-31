@@ -85,7 +85,7 @@ async function searchExact(arpabetSequence: string[]): Promise<string[]> {
 
 // --- Fuzzy search ---
 
-const SIMILARITY_THRESHOLD = 0.7;
+const SIMILARITY_THRESHOLD = 0.5;
 const MAX_RESULTS = 10;
 const LENGTH_TOLERANCE = 2;
 
