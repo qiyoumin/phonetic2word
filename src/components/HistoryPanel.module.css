@@ -193,14 +193,15 @@
   }
 }
 
-/* Tablet 640-1024px: constrained list height + thin scrollbar */
+/* Tablet 640-1024px: thin scrollbar */
 @media (min-width: 640px) and (max-width: 1024px) {
   .list {
-    overflow-y: auto;
-    resize: vertical;
-    min-height: 100px;
     scrollbar-width: thin;
     scrollbar-color: #c7c7cc transparent;
+  }
+
+  .listOverflowing {
+    resize: vertical;
   }
 
   .list::-webkit-scrollbar {
@@ -221,14 +222,19 @@
   }
 }
 
-/* Desktop >1024px: constrained list height + thin scrollbar */
+/* Desktop >1024px: thin scrollbar */
 @media (min-width: 1025px) {
+  .container {
+    flex: 1;
+  }
+
   .list {
-    overflow-y: auto;
-    resize: vertical;
-    min-height: 100px;
     scrollbar-width: thin;
     scrollbar-color: #c7c7cc transparent;
+  }
+
+  .listOverflowing {
+    resize: vertical;
   }
 
   .list::-webkit-scrollbar {
@@ -252,5 +258,33 @@
 @media (min-width: 640px) {
   .drawerHandle {
     display: none;
+  }
+}
+
+/* ----------------------------------------------------------------
+   Desktop compact mode (≥1025px, ≤900px):
+   Disable resize, let flex container control height.
+   ---------------------------------------------------------------- */
+@media (min-width: 1025px) and (max-height: 900px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .list {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+  }
+
+  .listOverflowing {
+    resize: none;
+  }
+
+  .empty {
+    padding: 1rem 0;
   }
 }

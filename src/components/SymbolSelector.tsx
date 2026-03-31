@@ -1,4 +1,7 @@
+import { useState, useEffect } from 'react';
+import type { ReactNode } from 'react';
 import type { PhoneticSystem, PhoneticSymbolData, PhoneticSymbol } from '../types/index';
+import { playPhoneme } from '../services/audioService';
 import styles from './SymbolSelector.module.css';
 
 export interface SymbolSelectorProps {
@@ -9,6 +12,8 @@ export interface SymbolSelectorProps {
   onAppendSymbol: (symbol: PhoneticSymbol) => void;
   onRemoveSymbol: (index: number) => void;
   onClearSequence: () => void;
+  /** 渲染在序列输入栏右侧的操作区（如查找按钮） */
+  actionSlot?: ReactNode;
 }
 
 // --- Phonetic sub-grouping definitions ---
@@ -86,27 +91,69 @@ function SymbolGroup({
   subGroups,
   disabled,
   onSelect,
+  defaultExpanded = true,
 }: {
   title: string;
   symbols: PhoneticSymbolData[];
   subGroups: SubGroup[];
   disabled: boolean;
   onSelect: (symbol: PhoneticSymbolData) => void;
+  defaultExpanded?: boolean;
 }) {
+  const [expanded, setExpanded] = useState(defaultExpanded);
+  const [isMobile, setIsMobile] = useState(() =>
+    typeof window !== 'undefined' && window.innerWidth < 640,
+  );
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return;
+    const mql = window.matchMedia('(max-width: 639px)');
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    setIsMobile(mql.matches);
+    mql.addEventListener('change', handler);
+    return () => mql.removeEventListener('change', handler);
+  }, []);
+
+  // 非手机端始终展开
+  const isExpanded = isMobile ? expanded : true;
+
+  const handleToggle = () => {
+    if (isMobile) setExpanded((prev) => !prev);
+  };
+
   return (
     <div>
-      <h3 className={styles.groupTitle}>{title}</h3>
-      <div className={styles.subGroupContainer}>
-        {subGroups.map((sg) => (
-          <SymbolSubGroup
-            key={sg.label}
-            label={sg.label}
-            symbols={filterBySubGroup(symbols, sg.codes)}
-            disabled={disabled}
-            onSelect={onSelect}
-          />
-        ))}
-      </div>
+      <h3
+        className={`${styles.groupTitle} ${isMobile ? styles.groupTitleToggle : ''}`}
+        onClick={handleToggle}
+        role={isMobile ? 'button' : undefined}
+        tabIndex={isMobile ? 0 : undefined}
+        aria-expanded={isMobile ? isExpanded : undefined}
+        onKeyDown={isMobile ? (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            handleToggle();
+          }
+        } : undefined}
+      >
+        <span>{title}</span>
+        {isMobile && (
+          <span className={`${styles.toggleIcon} ${isExpanded ? styles.toggleIconExpanded : ''}`} aria-hidden="true">▸</span>
+        )}
+      </h3>
+      {isExpanded && (
+        <div className={styles.subGroupContainer}>
+          {subGroups.map((sg) => (
+            <SymbolSubGroup
+              key={sg.label}
+              label={sg.label}
+              symbols={filterBySubGroup(symbols, sg.codes)}
+              disabled={disabled}
+              onSelect={onSelect}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
@@ -116,11 +163,13 @@ function SequenceDisplay({
   maxLength,
   onRemove,
   onClear,
+  actionSlot,
 }: {
   sequence: PhoneticSymbol[];
   maxLength: number;
   onRemove: (index: number) => void;
   onClear: () => void;
+  actionSlot?: ReactNode;
 }) {
   const atLimit = sequence.length >= maxLength;
 
@@ -153,6 +202,7 @@ function SequenceDisplay({
             清空
           </button>
         )}
+        {actionSlot}
       </div>
       <span
         className={`${styles.lengthIndicator} ${atLimit ? styles.lengthWarning : ''}`}
@@ -171,12 +221,14 @@ export function SymbolSelector({
   onAppendSymbol,
   onRemoveSymbol,
   onClearSequence,
+  actionSlot,
 }: SymbolSelectorProps) {
   const vowels = symbols.filter((s) => s.category === 'vowel');
   const consonants = symbols.filter((s) => s.category === 'consonant');
   const atLimit = sequence.length >= maxSequenceLength;
 
   const handleSelect = (sym: PhoneticSymbolData) => {
+    playPhoneme(sym.arpabetCode);
     onAppendSymbol({
       symbol: sym.symbol,
       arpabetCode: sym.arpabetCode,
@@ -191,21 +243,28 @@ export function SymbolSelector({
         maxLength={maxSequenceLength}
         onRemove={onRemoveSymbol}
         onClear={onClearSequence}
+        actionSlot={actionSlot}
       />
-      <SymbolGroup
-        title="元音 Vowels"
-        symbols={vowels}
-        subGroups={VOWEL_SUBGROUPS}
-        disabled={atLimit}
-        onSelect={handleSelect}
-      />
-      <SymbolGroup
-        title="辅音 Consonants"
-        symbols={consonants}
-        subGroups={CONSONANT_SUBGROUPS}
-        disabled={atLimit}
-        onSelect={handleSelect}
-      />
+      <div className={styles.phonemeGroups}>
+        <div className={styles.vowelGroup}>
+          <SymbolGroup
+            title="元音 Vowels"
+            symbols={vowels}
+            subGroups={VOWEL_SUBGROUPS}
+            disabled={atLimit}
+            onSelect={handleSelect}
+          />
+        </div>
+        <div className={styles.consonantGroup}>
+          <SymbolGroup
+            title="辅音 Consonants"
+            symbols={consonants}
+            subGroups={CONSONANT_SUBGROUPS}
+            disabled={atLimit}
+            onSelect={handleSelect}
+          />
+        </div>
+      </div>
     </div>
   );
 }

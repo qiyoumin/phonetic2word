@@ -24,43 +24,90 @@ export function HistoryPanel({
 }: HistoryPanelProps) {
   const [showConfirm, setShowConfirm] = useState(false);
   const [collapsed, setCollapsed] = useState(true);
+  const [overflowing, setOverflowing] = useState(false);
   const listRef = useRef<HTMLUListElement>(null);
 
   // 默认最大高度阈值（px），未保存过高度时使用
   const DEFAULT_MAX_HEIGHT = typeof window !== 'undefined' && window.innerWidth <= 1024 ? 300 : 400;
+
+  // 响应式紧凑模式检测：通过 matchMedia 监听视口变化
+  const [isCompactMode, setIsCompactMode] = useState(() =>
+    typeof window !== 'undefined' && window.innerWidth > 1024 && window.innerHeight <= 900,
+  );
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return;
+    const mql = window.matchMedia('(min-width: 1025px) and (max-height: 900px)');
+    const handler = (e: MediaQueryListEvent) => setIsCompactMode(e.matches);
+    mql.addEventListener('change', handler);
+    return () => mql.removeEventListener('change', handler);
+  }, []);
 
   // 从 localStorage 恢复列表高度，或在内容溢出时设置默认高度
   useEffect(() => {
     const el = listRef.current;
     if (!el) return;
 
-    try {
-      const saved = localStorage.getItem(LIST_HEIGHT_KEY);
-      if (saved) {
-        const height = parseInt(saved, 10);
-        if (height > 0) {
-          el.style.height = `${height}px`;
-          return;
-        }
-      }
-    } catch {
-      // localStorage 不可用时静默忽略
+    // 紧凑模式下不设置固定高度，交给 CSS flex 布局控制
+    if (isCompactMode) {
+      el.style.height = '';
+      el.style.minHeight = '';
+      el.style.maxHeight = '';
+      setOverflowing(false);
+      return;
     }
 
-    // 无保存值时：内容超过阈值才设固定高度，否则自然高度
-    if (el.scrollHeight > DEFAULT_MAX_HEIGHT) {
-      el.style.height = `${DEFAULT_MAX_HEIGHT}px`;
+    // 先清除固定高度，测量自然内容高度
+    el.style.height = '';
+    el.style.minHeight = '';
+    el.style.maxHeight = '';
+    const naturalHeight = el.scrollHeight;
+
+    if (naturalHeight > DEFAULT_MAX_HEIGHT) {
+      // 内容溢出：启用固定高度 + resize
+      setOverflowing(true);
+
+      // 尝试恢复用户之前拖拽保存的高度
+      let targetHeight = DEFAULT_MAX_HEIGHT;
+      try {
+        const saved = localStorage.getItem(LIST_HEIGHT_KEY);
+        if (saved) {
+          const h = parseInt(saved, 10);
+          // 恢复的高度不能小于阈值
+          if (h >= DEFAULT_MAX_HEIGHT) {
+            targetHeight = h;
+          }
+        }
+      } catch { /* ignore */ }
+
+      el.style.height = `${targetHeight}px`;
+      // 设置 min-height 防止用户拉得比阈值更短
+      el.style.minHeight = `${DEFAULT_MAX_HEIGHT}px`;
+      // 设置 max-height 防止用户拉得比内容更长
+      el.style.maxHeight = `${naturalHeight}px`;
+    } else {
+      // 内容未溢出：自然高度，不显示 resize
+      setOverflowing(false);
     }
-  }, [records.length, DEFAULT_MAX_HEIGHT]);
+  }, [records.length, DEFAULT_MAX_HEIGHT, isCompactMode]);
 
   // 监听列表高度变化（用户拖拽 resize），持久化到 localStorage
+  // 紧凑模式下跳过，避免不必要的 localStorage 写入
   useEffect(() => {
     const el = listRef.current;
-    if (!el) return;
+    if (!el || isCompactMode) return;
 
     const observer = new ResizeObserver((entries) => {
       for (const entry of entries) {
-        const height = Math.round(entry.contentRect.height);
+        let height = Math.round(entry.contentRect.height);
+
+        // 限制拖拽范围：不超过内容实际高度
+        const maxH = el.scrollHeight;
+        if (height > maxH && maxH > 0) {
+          height = maxH;
+          el.style.height = `${maxH}px`;
+        }
+
         try {
           localStorage.setItem(LIST_HEIGHT_KEY, String(height));
         } catch {
@@ -71,7 +118,7 @@ export function HistoryPanel({
 
     observer.observe(el);
     return () => observer.disconnect();
-  }, []);
+  }, [isCompactMode]);
 
   const handleClearClick = useCallback(() => {
     setShowConfirm(true);
@@ -113,7 +160,7 @@ export function HistoryPanel({
         {records.length === 0 ? (
           <div className={styles.empty}>暂无查询记录</div>
         ) : (
-          <ul className={styles.list} role="list" aria-label="查询历史记录" ref={listRef}>
+          <ul className={`${styles.list} ${overflowing ? styles.listOverflowing : ''}`} role="list" aria-label="查询历史记录" ref={listRef}>
             {records.map((record) => (
               <li
                 key={record.id}

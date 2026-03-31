@@ -294,3 +294,21 @@
   font-size: 0.8125rem;
   margin-top: 0.125rem;
 }
+
+/* ----------------------------------------------------------------
+   Desktop compact mode (≥1025px, ≤900px):
+   Reduce min-height to fit in constrained bottom panel.
+   ---------------------------------------------------------------- */
+@media (min-width: 1025px) and (max-height: 900px) {
+  .idle {
+    min-height: 100px;
+  }
+
+  .loading {
+    min-height: 100px;
+  }
+
+  .error {
+    min-height: 100px;
+  }
+}

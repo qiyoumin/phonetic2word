@@ -4,6 +4,16 @@
   gap: 1rem;
 }
 
+/* Wrapper for vowel + consonant groups — default: column */
+.phonemeGroups {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.vowelGroup {}
+.consonantGroup {}
+
 .groupTitle {
   margin: 0;
   font-size: 0.875rem;
@@ -11,6 +21,30 @@
   color: #374151;
   padding-bottom: 0.25rem;
   border-bottom: 2px solid #e5e7eb;
+}
+
+/* Accordion toggle — clickable on all screens, icon only visible on mobile */
+.groupTitleToggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  user-select: none;
+}
+
+.groupTitleToggle:focus-visible {
+  outline: 2px solid #6366f1;
+  outline-offset: 2px;
+}
+
+.toggleIcon {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  transition: transform 0.2s ease;
+}
+
+.toggleIconExpanded {
+  transform: rotate(90deg);
 }
 
 .subGroupContainer {
@@ -38,12 +72,6 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(56px, 1fr));
   gap: 0.375rem;
-}
-
-@media (max-width: 639px) {
-  .symbolGrid {
-    grid-template-columns: repeat(4, 1fr);
-  }
 }
 
 .symbolButton {
@@ -98,6 +126,8 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  flex: 1;
+  min-width: 0;
 }
 
 .sequenceLabel {
@@ -126,14 +156,6 @@
   border-radius: 0.5rem;
   align-items: center;
   overflow-x: auto;
-}
-
-@media (max-width: 639px) {
-  .sequenceDisplay {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-  }
 }
 
 .sequenceEmpty {
@@ -200,4 +222,139 @@
 
 .lengthWarning {
   color: #b45309;
+}
+
+/* ----------------------------------------------------------------
+   Mobile < 640px
+   ---------------------------------------------------------------- */
+@media (max-width: 639px) {
+  .symbolGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .sequenceDisplay {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Sticky sequence bar */
+  .sequenceSection {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: #fff;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #e5e7eb;
+    margin-bottom: -0.5rem;
+  }
+
+  /* Show accordion toggle icon + enhance title tap area */
+  .toggleIcon {
+    font-size: 1.25rem;
+  }
+
+  .groupTitleToggle {
+    padding: 0.5rem 0.25rem;
+    min-height: 44px;
+  }
+}
+
+/* ----------------------------------------------------------------
+   Desktop compact mode: short viewport (≤900px)
+   Vowels and consonants side by side, smaller buttons
+   ---------------------------------------------------------------- */
+@media (min-width: 1025px) and (max-height: 900px) {
+  .container {
+    gap: 0.5rem;
+  }
+
+  /* Side-by-side vowel + consonant */
+  .phonemeGroups {
+    flex-direction: row;
+    gap: 0.75rem;
+  }
+
+  .vowelGroup {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .consonantGroup {
+    flex: 1;
+    min-width: 0;
+  }
+
+  /* Compact buttons */
+  .symbolGrid {
+    grid-template-columns: repeat(auto-fill, minmax(44px, 1fr));
+    gap: 0.25rem;
+  }
+
+  .symbolButton {
+    min-width: 38px;
+    min-height: 34px;
+    padding: 0.2rem 0.125rem;
+  }
+
+  .symbolChar {
+    font-size: 0.9375rem;
+    line-height: 1.1;
+  }
+
+  .symbolHint {
+    font-size: 0.4375rem;
+    margin-top: 0;
+  }
+
+  /* Compact group titles and labels */
+  .groupTitle {
+    font-size: 0.8125rem;
+    padding-bottom: 0.125rem;
+  }
+
+  .subGroupContainer {
+    gap: 0.3rem;
+    margin-top: 0.25rem;
+  }
+
+  .subGroupLabel {
+    font-size: 0.5625rem;
+  }
+
+  /* Compact sequence area */
+  .sequenceSection {
+    gap: 0.25rem;
+  }
+
+  .sequenceRow {
+    min-height: 36px;
+    gap: 0.375rem;
+  }
+
+  .sequenceDisplay {
+    min-height: 32px;
+    padding: 0.25rem;
+    border-width: 1.5px;
+  }
+
+  .sequenceSymbol {
+    min-width: 26px;
+    min-height: 26px;
+    padding: 0.125rem 0.375rem;
+    font-size: 0.8125rem;
+  }
+
+  .sequenceEmpty {
+    font-size: 0.75rem;
+  }
+
+  .lengthIndicator {
+    font-size: 0.625rem;
+  }
+
+  .clearButton {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.6875rem;
+  }
 }
