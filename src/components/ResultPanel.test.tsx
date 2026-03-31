@@ -235,7 +235,7 @@ describe('WordDetailView audio button', () => {
     expect(audioButton).toBeInTheDocument();
   });
 
-  it('does not show audio button when audioUrl is absent', () => {
+  it('shows TTS fallback button when audioUrl is absent', () => {
     const detail: WordDetail = {
       word: 'bid',
       phonetic: 'bɪd',
@@ -243,8 +243,9 @@ describe('WordDetailView audio button', () => {
     };
     renderResultPanel({ selectedWord: detail });
 
-    const audioButton = screen.queryByRole('button', { name: /播放/ });
-    expect(audioButton).not.toBeInTheDocument();
+    const audioButton = screen.getByRole('button', { name: /播放/ });
+    expect(audioButton).toBeInTheDocument();
+    expect(audioButton).toHaveAttribute('title', '合成发音');
   });
 });
 

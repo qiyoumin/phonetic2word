@@ -258,6 +258,15 @@
   outline-offset: 2px;
 }
 
+.ttsBadge {
+  font-size: 0.625rem;
+  padding: 0.0625rem 0.25rem;
+  border-radius: 0.25rem;
+  background: #e5e7eb;
+  color: #6b7280;
+  line-height: 1;
+}
+
 .meaningSection {
   margin-bottom: 0.75rem;
 }

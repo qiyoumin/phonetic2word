@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import type { WordResult, FuzzyWordResult, WordDetail, PhoneticSystem } from '../types/index';
 import { arpabetToSymbol } from '../services/phoneticMapper';
+import { speakWord } from '../services/audioService';
 import styles from './ResultPanel.module.css';
 
 export interface ResultPanelProps {
@@ -167,19 +168,19 @@ function WordDetailView({
   detail: WordDetail;
   displayPhonetic: string;
 }) {
-  const [audioHidden, setAudioHidden] = useState(false);
+  const [audioFailed, setAudioFailed] = useState(false);
   const [audioRef, setAudioRef] = useState<HTMLAudioElement | null>(null);
+  const useTts = !detail.audioUrl || audioFailed;
 
   useEffect(() => {
+    setAudioFailed(false);
     if (!detail.audioUrl) {
-      setAudioHidden(true);
       setAudioRef(null);
       return;
     }
-    setAudioHidden(false);
     const audio = new Audio(detail.audioUrl);
     audio.preload = 'auto';
-    audio.addEventListener('error', () => setAudioHidden(true), { once: true });
+    audio.addEventListener('error', () => setAudioFailed(true), { once: true });
     setAudioRef(audio);
     return () => {
       audio.pause();
@@ -189,26 +190,28 @@ function WordDetailView({
   }, [detail.audioUrl]);
 
   const handlePlay = useCallback(() => {
-    if (audioRef) {
+    if (useTts) {
+      speakWord(detail.word);
+    } else if (audioRef) {
       audioRef.currentTime = 0;
-      audioRef.play().catch(() => setAudioHidden(true));
+      audioRef.play().catch(() => setAudioFailed(true));
     }
-  }, [audioRef]);
+  }, [audioRef, useTts, detail.word]);
 
   return (
     <div className={styles.detail} aria-label={`单词 ${detail.word} 的详情`}>
       <div className={styles.detailHeader}>
         <h2 className={styles.detailWord}>{detail.word}</h2>
         <span className={styles.detailPhonetic}>/{displayPhonetic}/</span>
-        {detail.audioUrl && !audioHidden && (
-          <button
-            className={styles.audioButton}
-            onClick={handlePlay}
-            aria-label={`播放 ${detail.word} 的发音`}
-          >
-            <span aria-hidden="true">🔊</span> 播放
-          </button>
-        )}
+        <button
+          className={styles.audioButton}
+          onClick={handlePlay}
+          aria-label={`播放 ${detail.word} 的发音`}
+          title={useTts ? '合成发音' : '录音发音'}
+        >
+          <span aria-hidden="true">🔊</span> 播放
+          {useTts && <span className={styles.ttsBadge}>合成</span>}
+        </button>
       </div>
 
       {detail.meanings.map((meaning, mIdx) => (
