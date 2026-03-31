@@ -38,15 +38,40 @@ function getSymbolsForSystem(system: PhoneticSystem): PhoneticSymbolData[] {
 
 const historyService = getHistoryService();
 
-function SearchButton({ onClick, disabled, loading }: { onClick: () => void; disabled: boolean; loading: boolean }) {
+const CANCEL_BUTTON_DELAY_MS = 1000;
+
+function SearchButton({ onClick, onCancel, disabled, loading }: { onClick: () => void; onCancel: () => void; disabled: boolean; loading: boolean }) {
+  const [showCancel, setShowCancel] = useState(false);
+
+  useEffect(() => {
+    if (!loading) {
+      setShowCancel(false);
+      return;
+    }
+    const timer = setTimeout(() => setShowCancel(true), CANCEL_BUTTON_DELAY_MS);
+    return () => clearTimeout(timer);
+  }, [loading]);
+
+  if (loading && showCancel) {
+    return (
+      <button
+        className={styles.searchButton}
+        onClick={onCancel}
+        aria-label="取消查找"
+      >
+        <span aria-hidden="true">✕</span> 取消
+      </button>
+    );
+  }
+
   return (
     <button
       className={styles.searchButton}
-      onClick={onClick}
-      disabled={disabled}
+      onClick={loading ? undefined : onClick}
+      disabled={disabled || loading}
       aria-label={loading ? '正在查找中' : '查找匹配单词'}
     >
-      {loading ? <><span aria-hidden="true">⏳</span> 查找中...</> : <><span aria-hidden="true">🔍</span> 查找</>}
+      <span aria-hidden="true">🔍</span> 查找
     </button>
   );
 }
@@ -58,11 +83,18 @@ function AppContent() {
   );
   const [emptyPrompt, setEmptyPrompt] = useState(false);
   const pendingFillSearch = useRef(false);
+  const searchControllerRef = useRef<AbortController | null>(null);
 
   const currentSymbols = useMemo(
     () => getSymbolsForSystem(state.currentSystem),
     [state.currentSystem],
   );
+
+  const handleCancelSearch = useCallback(() => {
+    searchControllerRef.current?.abort();
+    searchControllerRef.current = null;
+    dispatch({ type: 'SEARCH_ERROR', payload: '已取消查找' });
+  }, [dispatch]);
 
   const runSearch = useCallback(async () => {
     if (state.sequence.length === 0) {
@@ -70,54 +102,54 @@ function AppContent() {
       return;
     }
     setEmptyPrompt(false);
+
+    // Abort any previous in-flight search
+    searchControllerRef.current?.abort();
+    const controller = new AbortController();
+    searchControllerRef.current = controller;
+    const signal = controller.signal;
+
     dispatch({ type: 'SEARCH_START' });
 
     try {
-      const exactResults = await searchExact(state.sequence, state.currentSystem);
+      const [exactResults, fuzzyResults] = await Promise.all([
+        searchExact(state.sequence, state.currentSystem, signal),
+        searchFuzzy(state.sequence, state.currentSystem, signal),
+      ]);
 
-      if (exactResults.length > 0) {
+      // 从模糊结果中排除已精确匹配的单词
+      const exactWords = new Set(exactResults.map((r) => r.word));
+      const filteredFuzzy = fuzzyResults.filter((r) => !exactWords.has(r.word));
+
+      if (exactResults.length > 0 || filteredFuzzy.length > 0) {
         dispatch({
           type: 'SEARCH_SUCCESS',
-          payload: { results: exactResults, fuzzyResults: [] },
+          payload: { results: exactResults, fuzzyResults: filteredFuzzy },
         });
-        // 预取前几个单词的详情
-        prefetchWordDetails(exactResults.map((r) => r.word));
+        const allWords = [
+          ...exactResults.map((r) => r.word),
+          ...filteredFuzzy.map((r) => r.word),
+        ];
+        prefetchWordDetails(allWords);
         // Save to history
         const record: HistoryRecord = {
           id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
           timestamp: Date.now(),
           system: state.currentSystem,
           sequence: [...state.sequence],
-          matchedWords: exactResults.map((r) => r.word),
+          matchedWords: exactResults.length > 0
+            ? exactResults.map((r) => r.word)
+            : filteredFuzzy.map((r) => r.word),
         };
         historyService.save(record);
         setHistoryRecords(historyService.getAll());
       } else {
-        // No exact match → try fuzzy
-        const fuzzyResults = await searchFuzzy(state.sequence, state.currentSystem);
-        if (fuzzyResults.length > 0) {
-          dispatch({
-            type: 'SEARCH_SUCCESS',
-            payload: { results: [], fuzzyResults },
-          });
-          // 预取前几个单词的详情
-          prefetchWordDetails(fuzzyResults.map((r) => r.word));
-          // Save fuzzy results to history
-          const record: HistoryRecord = {
-            id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-            timestamp: Date.now(),
-            system: state.currentSystem,
-            sequence: [...state.sequence],
-            matchedWords: fuzzyResults.map((r) => r.word),
-          };
-          historyService.save(record);
-          setHistoryRecords(historyService.getAll());
-        } else {
-          dispatch({ type: 'SEARCH_EMPTY' });
-        }
+        dispatch({ type: 'SEARCH_EMPTY' });
       }
     } catch (err) {
-      if (err instanceof DOMException && err.name === 'AbortError') return;
+      // 如果是被新搜索覆盖或用户取消导致的 abort，不需要处理状态
+      // （新搜索已经 dispatch 了 SEARCH_START，或 handleCancelSearch 已 dispatch 了 SEARCH_ERROR）
+      if (signal.aborted) return;
       dispatch({
         type: 'SEARCH_ERROR',
         payload: err instanceof Error ? err.message : '查询出错',
@@ -212,41 +244,46 @@ function AppContent() {
             }}
             onRemoveSymbol={(idx) => dispatch({ type: 'REMOVE_SYMBOL', payload: idx })}
             onClearSequence={() => dispatch({ type: 'CLEAR_SEQUENCE' })}
+            actionSlot={
+              <div className={styles.searchAction}>
+                <SearchButton
+                  onClick={runSearch}
+                  onCancel={handleCancelSearch}
+                  disabled={state.searchStatus === 'loading'}
+                  loading={state.searchStatus === 'loading'}
+                />
+                {emptyPrompt && (
+                  <span className={styles.emptyPrompt}>请先组合音标符号</span>
+                )}
+              </div>
+            }
           />
-          <div className={styles.searchRow}>
-            <SearchButton
-              onClick={runSearch}
-              disabled={state.searchStatus === 'loading'}
-              loading={state.searchStatus === 'loading'}
+        </section>
+
+        <div className={styles.bottomPanel}>
+          <section className={styles.resultColumn}>
+            <ResultPanel
+              status={state.searchStatus}
+              results={state.results}
+              fuzzyResults={state.fuzzyResults}
+              selectedWord={state.selectedWord}
+              detailLoading={state.detailLoading}
+              onSelectWord={handleSelectWord}
+              onRetry={runSearch}
+              onBack={handleBack}
+              currentSystem={state.currentSystem}
+              errorMessage={state.error}
             />
-            {emptyPrompt && (
-              <span className={styles.emptyPrompt}>请先组合音标符号</span>
-            )}
-          </div>
-        </section>
+          </section>
 
-        <section className={styles.resultColumn}>
-          <ResultPanel
-            status={state.searchStatus}
-            results={state.results}
-            fuzzyResults={state.fuzzyResults}
-            selectedWord={state.selectedWord}
-            detailLoading={state.detailLoading}
-            onSelectWord={handleSelectWord}
-            onRetry={runSearch}
-            onBack={handleBack}
-            currentSystem={state.currentSystem}
-            errorMessage={state.error}
-          />
-        </section>
-
-        <aside className={styles.historyColumn}>
-          <HistoryPanel
-            records={historyRecords}
-            onSelectRecord={handleSelectRecord}
-            onClearHistory={handleClearHistory}
-          />
-        </aside>
+          <aside className={styles.historyColumn}>
+            <HistoryPanel
+              records={historyRecords}
+              onSelectRecord={handleSelectRecord}
+              onClearHistory={handleClearHistory}
+            />
+          </aside>
+        </div>
       </main>
     </div>
   );

@@ -11,9 +11,10 @@
  */
 
 import { createRequire } from 'node:module';
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, writeFileSync, readFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createHash } from 'node:crypto';
 
 const require = createRequire(import.meta.url);
 const cmuModule = require('cmu-pronouncing-dictionary');
@@ -80,3 +81,14 @@ console.log(`Built ${shardNames.length} shard files in ${outDir}`);
 console.log(`Total words indexed: ${totalWords}`);
 console.log(`English word filter: ${englishWordSet.size} words in dictionary`);
 console.log(`Shards: ${shardNames.join(', ')}`);
+
+// Generate manifest.json with version hash
+const shardContents = shardNames.map((phoneme) => {
+  const filepath = join(outDir, `index-${phoneme}.json`);
+  return readFileSync(filepath, 'utf-8');
+});
+const version = createHash('md5').update(shardContents.join('')).digest('hex');
+const manifest = { version, shards: shardNames.map((p) => `index-${p}.json`) };
+const publicDir = join(__dirname, '..', 'public');
+writeFileSync(join(publicDir, 'manifest.json'), JSON.stringify(manifest), 'utf-8');
+console.log(`Generated manifest.json (version: ${version})`);

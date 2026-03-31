@@ -109,19 +109,8 @@ function sequenceToArpabet(
 }
 
 // ---------------------------------------------------------------------------
-// AbortController management
+// AbortController management (legacy — controller now managed by caller)
 // ---------------------------------------------------------------------------
-
-let _currentController: AbortController | null = null;
-
-function createSearchController(): AbortController {
-  // Cancel previous incomplete query
-  if (_currentController) {
-    _currentController.abort();
-  }
-  _currentController = new AbortController();
-  return _currentController;
-}
 
 // ---------------------------------------------------------------------------
 // Free Dictionary API
@@ -239,14 +228,14 @@ export function stripPronunciationSuffix(word: string): string {
 export async function searchExact(
   sequence: PhoneticSymbol[],
   system: PhoneticSystem,
+  signal?: AbortSignal,
 ): Promise<WordResult[]> {
-  const controller = createSearchController();
   const arpabetSeq = sequenceToArpabet(sequence, system);
 
   const { words } = await postWorkerMessage(
     { type: 'SEARCH_EXACT', payload: { arpabetSequence: arpabetSeq } },
     'SEARCH_EXACT_RESULT',
-    controller.signal,
+    signal,
   );
 
   return words.map((w) => ({
@@ -264,14 +253,14 @@ export async function searchExact(
 export async function searchFuzzy(
   sequence: PhoneticSymbol[],
   system: PhoneticSystem,
+  signal?: AbortSignal,
 ): Promise<FuzzyWordResult[]> {
-  const controller = createSearchController();
   const arpabetSeq = sequenceToArpabet(sequence, system);
 
   const { results } = await postWorkerMessage(
     { type: 'SEARCH_FUZZY', payload: { arpabetSequence: arpabetSeq } },
     'SEARCH_FUZZY_RESULT',
-    controller.signal,
+    signal,
   );
 
   return results.map((r) => {
@@ -314,12 +303,10 @@ export async function getWordDetail(word: string): Promise<WordDetail> {
 
 /**
  * Abort any in-flight search.
+ * @deprecated Controller management moved to App component.
  */
 export function abortSearch(): void {
-  if (_currentController) {
-    _currentController.abort();
-    _currentController = null;
-  }
+  // No-op — kept for backward compatibility with tests
 }
 
 /**
