@@ -108,6 +108,8 @@ Chrome 90+ / Firefox 88+ / Safari 14+ / Edge 90+
 
 - [CMU Pronouncing Dictionary](http://www.speech.cs.cmu.edu/cgi-bin/cmudict) — 卡内基梅隆大学英语发音词典，提供单词到 ARPAbet 音标的映射。通过 [cmu-pronouncing-dictionary](https://github.com/words/cmu-pronouncing-dictionary) 使用，数据采用 BSD 许可证。
 - [Free Dictionary API](https://dictionaryapi.dev/) — 开源英语词典 API，提供释义、例句和发音音频。数据源自 [Wiktionary](https://en.wiktionary.org/)，采用 [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/) 许可证。
+- [ipachart.com / Wikimedia Commons phonetic samples](https://ipachart.com/) — 单元音 `AA AE AH AO EH ER IH IY UH UW` 直接使用 ipachart 提供的 OGG（原始文件托管于 Wikimedia Commons，许可证为 [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/)）。仅做 `44.1 kHz` 单声道 MP3 转码，未额外处理。
+- [Freesound “English Phonemes” pack](https://freesound.org/packs/12249/) — 所有双元音与当前全部辅音试听资源都统一使用 margo_heston 的原始录音链路（[CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/)），当前根目录文件只做 MP3 转码（`libmp3lame q=2`）未再剪辑或归一化；其中 `B` 暂以 `pp.wav` 近似替代，`DH` 暂以 `th.wav` 近似替代。该资源仅适用于非商业场景，若要商用需另寻素材或取得授权，详见 `public/audio/sources.json` 与 `public/audio/README.md`。
 
 ## License
 

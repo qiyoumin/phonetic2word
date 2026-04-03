@@ -3,6 +3,12 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { SymbolSelector } from './SymbolSelector';
 import type { PhoneticSymbolData, PhoneticSymbol } from '../types/index';
 
+// Mock audioService
+vi.mock('../services/audioService', () => ({
+  playPhoneme: vi.fn(),
+}));
+import { playPhoneme } from '../services/audioService';
+
 const vowelSymbol: PhoneticSymbolData = {
   symbol: 'æ',
   arpabetCode: 'AE',
@@ -56,6 +62,13 @@ describe('SymbolSelector', () => {
     expect(props.onAppendSymbol).toHaveBeenCalledWith(
       expect.objectContaining({ symbol: 'æ', arpabetCode: 'AE' }),
     );
+  });
+
+  it('点击符号时播放对应音素音频', () => {
+    renderSelector();
+    const btn = screen.getByRole('button', { name: /音标 æ/ });
+    fireEvent.click(btn);
+    expect(playPhoneme).toHaveBeenCalledWith('AE');
   });
 
   it('达到上限时按钮 disabled', () => {

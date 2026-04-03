@@ -8,6 +8,10 @@ dist/
 .vscode/*
 !.vscode/extensions.json
 .idea/
+.claude/
+.codex/*
+!.codex/environments/
+!.codex/environments/environment.toml
 *.swp
 *.swo
 *~

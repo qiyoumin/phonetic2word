@@ -1,0 +1,353 @@
+{
+  "AA": {
+    "source": "https://ipachart.com/ogg/Open_back_unrounded_vowel.ogg",
+    "file_page": "https://commons.wikimedia.org/wiki/File:Open_back_unrounded_vowel.ogg",
+    "title": "Open back unrounded vowel (AA)",
+    "speaker": "Wikimedia Commons contributor",
+    "license": "CC BY-SA 3.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+    "processing": "Converted from original OGG to mono MP3 (ffmpeg -b:a 128k)"
+  },
+  "AE": {
+    "source": "https://ipachart.com/ogg/Near-open_front_unrounded_vowel.ogg",
+    "file_page": "https://commons.wikimedia.org/wiki/File:Near-open_front_unrounded_vowel.ogg",
+    "title": "Near-open front unrounded vowel (AE)",
+    "speaker": "Wikimedia Commons contributor",
+    "license": "CC BY-SA 3.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+    "processing": "Converted from original OGG to mono MP3 (ffmpeg -b:a 128k)"
+  },
+  "AH": {
+    "source": "https://ipachart.com/ogg/Open-mid_back_unrounded_vowel.ogg",
+    "file_page": "https://commons.wikimedia.org/wiki/File:Open-mid_back_unrounded_vowel.ogg",
+    "title": "Open-mid back unrounded vowel (AH)",
+    "speaker": "Wikimedia Commons contributor",
+    "license": "CC BY-SA 3.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+    "processing": "Converted from original OGG to mono MP3 (ffmpeg -b:a 128k)"
+  },
+  "AO": {
+    "source": "https://ipachart.com/ogg/Open-mid_back_rounded_vowel.ogg",
+    "file_page": "https://commons.wikimedia.org/wiki/File:Open-mid_back_rounded_vowel.ogg",
+    "title": "Open-mid back rounded vowel (AO)",
+    "speaker": "Wikimedia Commons contributor",
+    "license": "CC BY-SA 3.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+    "processing": "Converted from original OGG to mono MP3 (ffmpeg -b:a 128k)"
+  },
+  "AW": {
+    "source": "https://freesound.org/data/previews/193/193308_3263903-hq.mp3",
+    "file_page": "https://freesound.org/s/193308/",
+    "title": "English phoneme \"ow\" (/aʊ/)",
+    "speaker": "margo_heston",
+    "license": "CC BY-NC 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-nc/4.0/",
+    "processing": "Current root file is a historical mono MP3 export from the original Freesound WAV (24 kHz, 128 kb/s); no trimming or normalization"
+  },
+  "AY": {
+    "source": "https://freesound.org/data/previews/193/193269_3263903-hq.mp3",
+    "file_page": "https://freesound.org/s/193269/",
+    "title": "English phoneme \"aye\" (/aɪ/)",
+    "speaker": "margo_heston",
+    "license": "CC BY-NC 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-nc/4.0/",
+    "processing": "Current root file is a historical mono MP3 export from the original Freesound WAV (44.1 kHz, 128 kb/s); no trimming or normalization"
+  },
+  "B": {
+    "source": "https://freesound.org/data/previews/193/193284_3263903-hq.mp3",
+    "file_page": "https://freesound.org/s/193284/",
+    "title": "Approximation for B using English phoneme \"p\" (/p/)",
+    "speaker": "margo_heston",
+    "license": "CC BY-NC 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-nc/4.0/",
+    "processing": "Converted from local 12249__margo_heston__english-phonemes/193284__margo_heston__pp.wav to stereo MP3 (libmp3lame q=2); used as the closest available substitute for B"
+  },
+  "CH": {
+    "source": "https://freesound.org/data/previews/193/193305_3263903-hq.mp3",
+    "file_page": "https://freesound.org/s/193305/",
+    "title": "English phoneme \"ch\" (/tʃ/)",
+    "speaker": "margo_heston",
+    "license": "CC BY-NC 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-nc/4.0/",
+    "processing": "Converted from original WAV to stereo MP3 (libmp3lame q=2), no trimming or normalization"
+  },
+  "D": {
+    "source": "https://freesound.org/data/previews/193/193268_3263903-hq.mp3",
+    "file_page": "https://freesound.org/s/193268/",
+    "title": "English phoneme \"d\" (/d/)",
+    "speaker": "margo_heston",
+    "license": "CC BY-NC 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-nc/4.0/",
+    "processing": "Converted from original WAV to stereo MP3 (libmp3lame q=2), no additional processing"
+  },
+  "DH": {
+    "source": "https://freesound.org/data/previews/193/193320_3263903-hq.mp3",
+    "file_page": "https://freesound.org/s/193320/",
+    "title": "Approximation for DH using English phoneme \"th\" (/theta/)",
+    "speaker": "margo_heston",
+    "license": "CC BY-NC 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-nc/4.0/",
+    "processing": "Converted from local 12249__margo_heston__english-phonemes/193320__margo_heston__th.wav to stereo MP3 (libmp3lame q=2); used as the closest available substitute for DH"
+  },
+  "EH": {
+    "source": "https://ipachart.com/ogg/Open-mid_front_unrounded_vowel.ogg",
+    "file_page": "https://commons.wikimedia.org/wiki/File:Open-mid_front_unrounded_vowel.ogg",
+    "title": "Open-mid front unrounded vowel (EH)",
+    "speaker": "Wikimedia Commons contributor",
+    "license": "CC BY-SA 3.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+    "processing": "Converted from original OGG to mono MP3 (ffmpeg -b:a 128k)"
+  },
+  "ER": {
+    "source": "https://ipachart.com/ogg/Open-mid_central_unrounded_vowel.ogg",
+    "file_page": "https://commons.wikimedia.org/wiki/File:Open-mid_central_unrounded_vowel.ogg",
+    "title": "Open-mid central unrounded vowel (ER)",
+    "speaker": "Wikimedia Commons contributor",
+    "license": "CC BY-SA 3.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+    "processing": "Converted from original OGG to mono MP3 (ffmpeg -b:a 128k)"
+  },
+  "EY": {
+    "source": "https://freesound.org/data/previews/193/193262_3263903-hq.mp3",
+    "file_page": "https://freesound.org/s/193262/",
+    "title": "English phoneme \"ay\" (/eɪ/)",
+    "speaker": "margo_heston",
+    "license": "CC BY-NC 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-nc/4.0/",
+    "processing": "Current root file is a historical mono MP3 export from the original Freesound WAV (44.1 kHz, 128 kb/s); no trimming or normalization"
+  },
+  "F": {
+    "source": "https://freesound.org/data/previews/193/193270_3263903-hq.mp3",
+    "file_page": "https://freesound.org/s/193270/",
+    "title": "English phoneme \"f\" (/f/)",
+    "speaker": "margo_heston",
+    "license": "CC BY-NC 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-nc/4.0/",
+    "processing": "Converted from original WAV to stereo MP3 (libmp3lame q=2), no additional processing"
+  },
+  "G": {
+    "source": "https://freesound.org/data/previews/193/193279_3263903-hq.mp3",
+    "file_page": "https://freesound.org/s/193279/",
+    "title": "English phoneme \"g\" (/g/)",
+    "speaker": "margo_heston",
+    "license": "CC BY-NC 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-nc/4.0/",
+    "processing": "Converted from original WAV to stereo MP3 (libmp3lame q=2), no additional processing"
+  },
+  "HH": {
+    "source": "https://freesound.org/data/previews/193/193278_3263903-hq.mp3",
+    "file_page": "https://freesound.org/s/193278/",
+    "title": "English phoneme \"hh\" (/h/)",
+    "speaker": "margo_heston",
+    "license": "CC BY-NC 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-nc/4.0/",
+    "processing": "Converted from original WAV to stereo MP3 (libmp3lame q=2), no additional processing"
+  },
+  "IH": {
+    "source": "https://ipachart.com/ogg/Near-close_near-front_unrounded_vowel.ogg",
+    "file_page": "https://commons.wikimedia.org/wiki/File:Near-close_near-front_unrounded_vowel.ogg",
+    "title": "Near-close near-front unrounded vowel (IH)",
+    "speaker": "Wikimedia Commons contributor",
+    "license": "CC BY-SA 3.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+    "processing": "Converted from original OGG to mono MP3 (ffmpeg -b:a 128k)"
+  },
+  "IY": {
+    "source": "https://ipachart.com/ogg/Close_front_unrounded_vowel.ogg",
+    "file_page": "https://commons.wikimedia.org/wiki/File:Close_front_unrounded_vowel.ogg",
+    "title": "Close front unrounded vowel (IY)",
+    "speaker": "Wikimedia Commons contributor",
+    "license": "CC BY-SA 3.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+    "processing": "Converted from original OGG to mono MP3 (ffmpeg -b:a 128k)"
+  },
+  "JH": {
+    "source": "https://freesound.org/data/previews/193/193276_3263903-hq.mp3",
+    "file_page": "https://freesound.org/s/193276/",
+    "title": "English phoneme \"j\" (/dʒ/)",
+    "speaker": "margo_heston",
+    "license": "CC BY-NC 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-nc/4.0/",
+    "processing": "Converted from original WAV to stereo MP3 (libmp3lame q=2), no trimming or normalization"
+  },
+  "K": {
+    "source": "https://freesound.org/data/previews/193/193283_3263903-hq.mp3",
+    "file_page": "https://freesound.org/s/193283/",
+    "title": "English phoneme \"k\" (/k/)",
+    "speaker": "margo_heston",
+    "license": "CC BY-NC 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-nc/4.0/",
+    "processing": "Converted from original WAV to stereo MP3 (libmp3lame q=2), no additional processing"
+  },
+  "L": {
+    "source": "https://freesound.org/data/previews/193/193282_3263903-hq.mp3",
+    "file_page": "https://freesound.org/s/193282/",
+    "title": "English phoneme \"l\" (/l/)",
+    "speaker": "margo_heston",
+    "license": "CC BY-NC 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-nc/4.0/",
+    "processing": "Converted from original WAV to stereo MP3 (libmp3lame q=2), no additional processing"
+  },
+  "M": {
+    "source": "https://freesound.org/data/previews/193/193281_3263903-hq.mp3",
+    "file_page": "https://freesound.org/s/193281/",
+    "title": "English phoneme \"m\" (/m/)",
+    "speaker": "margo_heston",
+    "license": "CC BY-NC 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-nc/4.0/",
+    "processing": "Converted from original WAV to stereo MP3 (libmp3lame q=2), no additional processing"
+  },
+  "N": {
+    "source": "https://freesound.org/data/previews/193/193280_3263903-hq.mp3",
+    "file_page": "https://freesound.org/s/193280/",
+    "title": "English phoneme \"n\" (/n/)",
+    "speaker": "margo_heston",
+    "license": "CC BY-NC 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-nc/4.0/",
+    "processing": "Converted from original WAV to stereo MP3 (libmp3lame q=2), no additional processing"
+  },
+  "NG": {
+    "source": "https://freesound.org/data/previews/193/193310_3263903-hq.mp3",
+    "file_page": "https://freesound.org/s/193310/",
+    "title": "English phoneme \"ng\" (/ŋ/)",
+    "speaker": "margo_heston",
+    "license": "CC BY-NC 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-nc/4.0/",
+    "processing": "Converted from original WAV to stereo MP3 (libmp3lame q=2), no additional processing"
+  },
+  "OW": {
+    "source": "https://freesound.org/data/previews/193/193285_3263903-hq.mp3",
+    "file_page": "https://freesound.org/s/193285/",
+    "title": "English phoneme \"oh\" (/oʊ/)",
+    "speaker": "margo_heston",
+    "license": "CC BY-NC 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-nc/4.0/",
+    "processing": "Current root file is a historical mono MP3 export from the original Freesound WAV (44.1 kHz, 128 kb/s); no trimming or normalization"
+  },
+  "OY": {
+    "source": "https://freesound.org/data/previews/193/193313_3263903-hq.mp3",
+    "file_page": "https://freesound.org/s/193313/",
+    "title": "English phoneme \"oy\" (/ɔɪ/)",
+    "speaker": "margo_heston",
+    "license": "CC BY-NC 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-nc/4.0/",
+    "processing": "Current root file is a historical mono MP3 export from the original Freesound WAV (24 kHz, 128 kb/s); no trimming or normalization"
+  },
+  "P": {
+    "source": "https://freesound.org/data/previews/193/193284_3263903-hq.mp3",
+    "file_page": "https://freesound.org/s/193284/",
+    "title": "English phoneme \"p\" (/p/)",
+    "speaker": "margo_heston",
+    "license": "CC BY-NC 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-nc/4.0/",
+    "processing": "Converted from original WAV to stereo MP3 (libmp3lame q=2), no additional processing"
+  },
+  "R": {
+    "source": "https://freesound.org/data/previews/193/193275_3263903-hq.mp3",
+    "file_page": "https://freesound.org/s/193275/",
+    "title": "English phoneme \"r\" (/r/)",
+    "speaker": "margo_heston",
+    "license": "CC BY-NC 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-nc/4.0/",
+    "processing": "Converted from original WAV to stereo MP3 (libmp3lame q=2), no additional processing"
+  },
+  "S": {
+    "source": "https://freesound.org/data/previews/193/193272_3263903-hq.mp3",
+    "file_page": "https://freesound.org/s/193272/",
+    "title": "English phoneme \"s\" (/s/)",
+    "speaker": "margo_heston",
+    "license": "CC BY-NC 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-nc/4.0/",
+    "processing": "Converted from original WAV to stereo MP3 (libmp3lame q=2), no additional processing"
+  },
+  "SH": {
+    "source": "https://freesound.org/data/previews/193/193312_3263903-hq.mp3",
+    "file_page": "https://freesound.org/s/193312/",
+    "title": "English phoneme \"sh\" (/ʃ/)",
+    "speaker": "margo_heston",
+    "license": "CC BY-NC 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-nc/4.0/",
+    "processing": "Converted from original WAV to stereo MP3 (libmp3lame q=2), no trimming or normalization"
+  },
+  "T": {
+    "source": "https://freesound.org/data/previews/193/193273_3263903-hq.mp3",
+    "file_page": "https://freesound.org/s/193273/",
+    "title": "English phoneme \"t\" (/t/)",
+    "speaker": "margo_heston",
+    "license": "CC BY-NC 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-nc/4.0/",
+    "processing": "Converted from original WAV to stereo MP3 (libmp3lame q=2), no additional processing"
+  },
+  "TH": {
+    "source": "https://freesound.org/data/previews/193/193320_3263903-hq.mp3",
+    "file_page": "https://freesound.org/s/193320/",
+    "title": "English phoneme \"th\" (/θ/)",
+    "speaker": "margo_heston",
+    "license": "CC BY-NC 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-nc/4.0/",
+    "processing": "Converted from original WAV to stereo MP3 (libmp3lame q=2), no trimming or normalization"
+  },
+  "UH": {
+    "source": "https://ipachart.com/ogg/Near-close_near-back_rounded_vowel.ogg",
+    "file_page": "https://commons.wikimedia.org/wiki/File:Near-close_near-back_rounded_vowel.ogg",
+    "title": "Near-close near-back rounded vowel (UH)",
+    "speaker": "Wikimedia Commons contributor",
+    "license": "CC BY-SA 3.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+    "processing": "Converted from original OGG to mono MP3 (ffmpeg -b:a 128k)"
+  },
+  "UW": {
+    "source": "https://ipachart.com/ogg/Close_back_rounded_vowel.ogg",
+    "file_page": "https://commons.wikimedia.org/wiki/File:Close_back_rounded_vowel.ogg",
+    "title": "Close back rounded vowel (UW)",
+    "speaker": "Wikimedia Commons contributor",
+    "license": "CC BY-SA 3.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+    "processing": "Converted from original OGG to mono MP3 (ffmpeg -b:a 128k)"
+  },
+  "V": {
+    "source": "https://freesound.org/data/previews/193/193322_3263903-hq.mp3",
+    "file_page": "https://freesound.org/s/193322/",
+    "title": "English phoneme \"v\" (/v/)",
+    "speaker": "margo_heston",
+    "license": "CC BY-NC 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-nc/4.0/",
+    "processing": "Converted from original WAV to stereo MP3 (libmp3lame q=2), no additional processing"
+  },
+  "W": {
+    "source": "https://freesound.org/data/previews/193/193326_3263903-hq.mp3",
+    "file_page": "https://freesound.org/s/193326/",
+    "title": "English phoneme \"w\" (/w/)",
+    "speaker": "margo_heston",
+    "license": "CC BY-NC 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-nc/4.0/",
+    "processing": "Converted from original WAV to stereo MP3 (libmp3lame q=2), no additional processing"
+  },
+  "Y": {
+    "source": "https://freesound.org/data/previews/193/193324_3263903-hq.mp3",
+    "file_page": "https://freesound.org/s/193324/",
+    "title": "English phoneme \"y\" (/j/)",
+    "speaker": "margo_heston",
+    "license": "CC BY-NC 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-nc/4.0/",
+    "processing": "Converted from original WAV to stereo MP3 (libmp3lame q=2), no additional processing"
+  },
+  "Z": {
+    "source": "https://freesound.org/data/previews/193/193321_3263903-hq.mp3",
+    "file_page": "https://freesound.org/s/193321/",
+    "title": "English phoneme \"z\" (/z/)",
+    "speaker": "margo_heston",
+    "license": "CC BY-NC 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-nc/4.0/",
+    "processing": "Converted from original WAV to stereo MP3 (libmp3lame q=2), no additional processing"
+  },
+  "ZH": {
+    "source": "https://freesound.org/data/previews/193/193325_3263903-hq.mp3",
+    "file_page": "https://freesound.org/s/193325/",
+    "title": "English phoneme \"zh\" (/ʒ/)",
+    "speaker": "margo_heston",
+    "license": "CC BY-NC 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-nc/4.0/",
+    "processing": "Converted from original WAV to stereo MP3 (libmp3lame q=2), no trimming or normalization"
+  }
+}
