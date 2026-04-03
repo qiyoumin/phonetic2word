@@ -235,6 +235,22 @@ describe('WordDetailView audio button', () => {
     expect(audioButton).toBeInTheDocument();
   });
 
+  it('does not emit media cleanup warnings on unmount when audioUrl is present', () => {
+    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const detail: WordDetail = {
+      word: 'bid',
+      phonetic: 'bɪd',
+      meanings: [{ partOfSpeech: 'verb', definitions: [{ definition: 'to offer' }] }],
+      audioUrl: 'https://example.com/bid.mp3',
+    };
+
+    const { unmount } = renderResultPanel({ selectedWord: detail });
+    unmount();
+
+    expect(consoleErrorSpy).not.toHaveBeenCalled();
+    consoleErrorSpy.mockRestore();
+  });
+
   it('shows TTS fallback button when audioUrl is absent', () => {
     const detail: WordDetail = {
       word: 'bid',
