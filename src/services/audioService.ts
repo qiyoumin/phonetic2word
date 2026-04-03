@@ -19,9 +19,18 @@ export function playPhoneme(arpabetCode: string): Promise<void> {
     audioCache.set(arpabetCode, audio);
   }
   audio.currentTime = 0;
-  return audio.play().catch(() => {
-    // 浏览器在用户未交互时会阻止自动播放，静默处理
-  });
+  try {
+    const playResult = audio.play();
+    if (playResult && typeof playResult.catch === 'function') {
+      return playResult.catch(() => {
+        // 浏览器在用户未交互时会阻止自动播放，静默处理
+      });
+    }
+    return Promise.resolve();
+  } catch {
+    // 某些测试环境或浏览器实现会同步抛错，静默处理
+    return Promise.resolve();
+  }
 }
 
 /**
